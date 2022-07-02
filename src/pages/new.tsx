@@ -17,6 +17,20 @@ const NewPollPage: NextPage = () => {
 		}
 	}, [status]);
 
+	useEffect(() => {
+		if (addButtonRef.current) {
+			if (options.length == 0) {
+				setOptions(["", ""])
+				return
+			}
+
+			if (options.length >= 10)
+				addButtonRef.current.style.display = "none";
+			else
+				addButtonRef.current.style.display = "inline";
+		}
+	}, [options]);
+
 	const handleQuestionChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setQuestion(e.currentTarget.value);
 	};
@@ -32,36 +46,16 @@ const NewPollPage: NextPage = () => {
 
 	const handleAddOption = () => {
 		setOptions([...options, ""]);
-		if (options.length >= 9) {
-			if (addButtonRef.current) {
-				addButtonRef.current.style.display = "none";
-			}
-			return;
-		}
-
 	};
 
-	const removeOption = (i: number) => {
-		let newOptions = [...options];
-		newOptions.splice(i, 1);
-		setOptions(newOptions);
-
-		if (options.length <= 10) {
-			if (addButtonRef.current) {
-				addButtonRef.current.style.display = "block";
-			}
-			return;
-		}
-	}
-
 	const handleSubmit = () => {
-		setOptions((oldOptions) => {
-			let newOptions = [...oldOptions];
-			return newOptions.filter((o) => o.length > 0);
-		});
+		const newOptions = options.filter((o) => o.length > 0);
+
+		if (newOptions.length == 0) return;
+
 		mutate({
 			question,
-			options,
+			options: newOptions,
 		});
 	};
 
@@ -89,6 +83,7 @@ const NewPollPage: NextPage = () => {
 							<div key={i} className="w-6/12 text-center mt-5">
 								<input
 									value={options[i]}
+									disabled={isLoading}
 									onChange={(e) => handleOptionChange(e, i)}
 									placeholder="yes"
 									className="px-5 py-3 text-xl bg-gray-100 shadow-sm rounded-md w-11/12 md:w-9/12 text-center"
