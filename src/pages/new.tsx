@@ -135,7 +135,7 @@ const NewPollPage: NextPage = () => {
             <div className="w-12/12 text-center mt-20 basis-full">
               <button
                 disabled={isLoading}
-                className="px-5 py-3 text-xl bg-green-200 shadow-sm rounded-md w-6/12 md:w-3/12 text-center font-bold border-2 border-black"
+                className="px-5 py-3 text-xl bg-green-200 shadow-sm rounded-md w-6/12 md:w-3/12 text-center font-bold border-4 border-black"
                 onClick={handleSubmit}
               >
                 {isLoading ? "Submitting ..." : "Submit"}
