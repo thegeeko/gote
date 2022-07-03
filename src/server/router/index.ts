@@ -6,7 +6,7 @@ import * as routers from "./routes";
 
 export const appRouter = createRouter()
 	.transformer(superjson)
-	.merge("polls.", routers.questionsRouter)
+	.merge("polls.", routers.pollsRouter)
 	.merge("votes.", routers.votesRouter);
 
 // export type definition of API

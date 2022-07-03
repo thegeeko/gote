@@ -1,7 +1,7 @@
 import { createRouter } from "./context";
 import { z } from "zod";
 
-const questionsRouter = createRouter()
+const pollsRouter = createRouter()
   .query("getAllUser", {
     async resolve({ ctx }) {
       return ctx.prisma?.pollQuestions.findMany({
@@ -49,4 +49,4 @@ const questionsRouter = createRouter()
 
 const votesRouter = createRouter();
 
-export { votesRouter, questionsRouter };
+export { votesRouter, pollsRouter };
