@@ -4,14 +4,17 @@ import * as trpcNext from "@trpc/server/adapters/next";
 import { prisma } from "../db/client";
 
 export const createContext = ({
-	req,
-	res,
+  req,
+  res,
 }: trpcNext.CreateNextContextOptions) => {
-	return {
-		req,
-		res,
-		prisma,
-	};
+  const token = req.cookies["owner-token"];
+
+  return {
+    req,
+    res,
+    token,
+    prisma,
+  };
 };
 
 type Context = trpc.inferAsyncReturnType<typeof createContext>;

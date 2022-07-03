@@ -18,10 +18,14 @@ model PollQuestions {
   createdAt DateTime  @default(now())
   endsAt    DateTime?
 
+  ownerToken String @db.VarChar(21)
+
   question String    @db.VarChar(1000)
   options  Json
   Vote     Votes[]
   Options  Options[]
+
+  @@index([ownerToken])
 }
 
 model Votes {

@@ -4,7 +4,7 @@ import Head from "next/head";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  const { data, isLoading } = trpc.useQuery(["polls.getAll"]);
+  const { data, isLoading } = trpc.useQuery(["polls.getAllUser"]);
 
   if (isLoading || !data) return <h1>Loading...</h1>;
 

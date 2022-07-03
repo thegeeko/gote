@@ -51,7 +51,10 @@ const NewPollPage: NextPage = () => {
 	const handleSubmit = () => {
 		const newOptions = options.filter((o) => o.length > 0);
 
-		if (newOptions.length == 0) return;
+		if (newOptions.length == 0 || question.length == 0) {
+			alert("The Question must be at least 5 characters and u must have 2 options");
+			return;
+		}
 
 		mutate({
 			question,
