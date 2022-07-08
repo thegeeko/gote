@@ -6,16 +6,13 @@ import { nanoid } from "nanoid";
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-	console.log("req :", request.cookies.get("owner-token"))
-	if (request.cookies.get("owner-token")) return;
+  if (request.cookies.get("owner-token")) return;
 
-	const response = NextResponse.next();
-	response.cookies.set("owner-token", nanoid(), { sameSite: "strict" })
+  const response = NextResponse.next();
+  response.cookies.set("owner-token", nanoid(), { sameSite: "strict" });
 
-	console.log("res :", response.cookies.get("owner-token"))
-	return response;
+  return response;
 }
 
 // See "Matching Paths" below to learn more
-export const config = {
-}
+export const config = {};

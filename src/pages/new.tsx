@@ -59,9 +59,14 @@ const NewPollPage: NextPage = () => {
       return;
     }
 
+    let optsToSubmit: { value: string }[] = [];
+    options.forEach((o) => {
+      optsToSubmit.push({ value: o });
+    });
+
     mutate({
       question,
-      options: newOptions,
+      options: optsToSubmit,
     });
   };
 

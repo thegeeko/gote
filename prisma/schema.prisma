@@ -21,7 +21,6 @@ model PollQuestions {
   ownerToken String @db.VarChar(21)
 
   question String    @db.VarChar(1000)
-  options  Json
   Vote     Votes[]
   Options  Options[]
 
@@ -29,14 +28,19 @@ model PollQuestions {
 }
 
 model Votes {
-  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
   choice   Options @relation(fields: [choiceId], references: [id])
   choiceId String
 
+  ownerToken String @db.VarChar(21)
+
   question    PollQuestions @relation(fields: [questionsId], references: [id])
   questionsId String
+
+  @@id([questionsId, ownerToken])
+  @@index([choiceId])
+  @@index([ownerToken])
 }
 
 model Options {
@@ -49,4 +53,6 @@ model Options {
   questionsId String
 
   Votes Votes[]
+
+  @@index([questionsId])
 }
