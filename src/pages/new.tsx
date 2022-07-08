@@ -13,7 +13,7 @@ const NewPollPage: NextPage = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
 
-  const { mutate, isLoading, status } = trpc.useMutation("polls.add", {
+  const { mutate, isLoading } = trpc.useMutation("polls.add", {
     onSuccess(data) {
       if (typeof data == "string") {
         router.push(`polls/${data}`);
