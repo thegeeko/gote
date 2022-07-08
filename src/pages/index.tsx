@@ -46,13 +46,13 @@ const Home: NextPage = () => {
       <div className="flex flex-wrap justify-between">
         {data.map((q) => (
           <Link href={`/polls/${q.id}`} key={q.id}>
-            <div className="w-full mt-4 md:w-5/12 flex cursor-pointer shadow-sm border-4 border-black bg-gray-200 px-10 py-6 font-bold text-3xl rounded-md text-center">
+            <div className="w-full mt-4 md:w-5/12 flex cursor-pointer shadow-sm  bg-gray-200 px-10 py-6 font-bold text-3xl rounded-md text-center">
               <div className="m-auto"> {q.question} </div>
             </div>
           </Link>
         ))}
         <Link href="/new">
-          <button className="px-6 py-3 mt-10 text-xl text-black bg-green-200 shadow-sm rounded-md w-6/12 md:w-3/12 text-center font-bold border-4 border-black basis-full">
+          <button className="px-6 py-3 mt-10 text-xl text-black bg-green-200 shadow-sm rounded-md w-6/12 md:w-3/12 text-center font-bold  basis-full">
             New Poll
           </button>
         </Link>
