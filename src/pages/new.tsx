@@ -2,23 +2,24 @@ import type { NextPage } from "next";
 
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { trpc } from "../utils/trpc";
 
 const NewPollPage: NextPage = () => {
   const addButtonRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
 
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
 
-  const { mutate, isLoading, status } = trpc.useMutation("polls.add");
-
-  useEffect(() => {
-    if (status == "success") {
-      setQuestion("");
-      setOptions(["", ""]);
-    }
-  }, [status]);
+  const { mutate, isLoading, status } = trpc.useMutation("polls.add", {
+    onSuccess(data) {
+      if (typeof data == "string") {
+        router.push(`polls/${data}`);
+      }
+    },
+  });
 
   useEffect(() => {
     if (addButtonRef.current) {

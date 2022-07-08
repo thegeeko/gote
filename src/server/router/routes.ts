@@ -83,7 +83,7 @@ const pollsRouter = createRouter()
     async resolve({ input, ctx }) {
       if (!ctx.token) return { error: "Unauthorized" };
 
-      await ctx.prisma?.pollQuestions.create({
+      const q = await ctx.prisma.pollQuestions.create({
         data: {
           question: input.question,
           ownerToken: ctx.token,
@@ -94,6 +94,8 @@ const pollsRouter = createRouter()
           },
         },
       });
+
+      return q.id;
     },
   })
 
