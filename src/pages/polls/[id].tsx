@@ -8,6 +8,7 @@ import { trpc } from "../../utils/trpc";
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
   const [votes, setVotes] = useState<Map<string, number>>();
   const poll = trpc.useQuery(["polls.getById", { id }]);
+  const trpcUtils = trpc.useContext();
   trpc.useQuery(["polls.getVotes", { id }], {
     onSuccess(data) {
       if (!data.didVote) return;
@@ -23,7 +24,7 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
   });
   const { mutate, isLoading } = trpc.useMutation(["polls.vote"], {
     onSuccess() {
-      window.location.reload();
+      trpcUtils.refetchQueries(["polls.getVotes", { id }]);
     },
   });
 

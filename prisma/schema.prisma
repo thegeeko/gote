@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider             = "mysql"
+  provider             = "cockroachdb"
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
@@ -18,9 +18,9 @@ model PollQuestions {
   createdAt DateTime  @default(now())
   endsAt    DateTime?
 
-  ownerToken String @db.VarChar(21)
+  ownerToken String
 
-  question String    @db.VarChar(1000)
+  question String
   Vote     Votes[]
   Options  Options[]
 
@@ -33,7 +33,7 @@ model Votes {
   choice   Options @relation(fields: [choiceId], references: [id])
   choiceId String
 
-  ownerToken String @db.VarChar(21)
+  ownerToken String
 
   question    PollQuestions @relation(fields: [questionsId], references: [id])
   questionsId String
