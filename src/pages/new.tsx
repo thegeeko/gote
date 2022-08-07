@@ -13,13 +13,7 @@ const NewPollPage: NextPage = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
 
-  const { mutate, isLoading } = trpc.useMutation("polls.add", {
-    onSuccess(data) {
-      if (typeof data == "string") {
-        router.push(`polls/${data}`);
-      }
-    },
-  });
+  const { mutateAsync: addNewPoll, isLoading } = trpc.useMutation("polls.add");
 
   useEffect(() => {
     if (addButtonRef.current) {
@@ -50,8 +44,8 @@ const NewPollPage: NextPage = () => {
     setOptions([...options, ""]);
   };
 
-  const handleSubmit = () => {
-    if(isLoading) return;
+  const handleSubmit = async () => {
+    if (isLoading) return;
 
     const newOptions = options.filter((o) => o.length > 0);
 
@@ -67,10 +61,14 @@ const NewPollPage: NextPage = () => {
       optsToSubmit.push({ value: o });
     });
 
-    mutate({
+    const p = await addNewPoll({
       question,
       options: optsToSubmit,
     });
+
+    if (typeof p == "string") {
+      router.push(`polls/${p}`);
+    }
   };
 
   return (

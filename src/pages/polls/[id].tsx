@@ -68,10 +68,10 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
       <div className="flex flex-wrap items-center">
         {poll.data.Options.map((o, i) => {
           return (
-            <div key={i} className="w-6/12 text-center mt-5 cursor-pointer">
+            <div key={i} className="w-6/12 text-center mt-5 ">
               <div
                 onClick={() => handleVoting(o.id)}
-                className="relative  text-xl m-auto bg-gray-100 shadow-sm rounded-md w-11/12 md:w-9/12 text-center"
+                className="relative  text-xl m-auto cursor-pointer bg-gray-100 shadow-sm rounded-md w-11/12 md:w-9/12 text-center"
               >
                 <div className="px-5 py-3 -z-1">{o.value}</div>
                 {votes && (
