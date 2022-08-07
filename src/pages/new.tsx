@@ -51,6 +51,8 @@ const NewPollPage: NextPage = () => {
   };
 
   const handleSubmit = () => {
+    if(isLoading) return;
+
     const newOptions = options.filter((o) => o.length > 0);
 
     if (newOptions.length == 0 || question.length == 0) {
