@@ -2,13 +2,16 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc";
 
 const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
   const [votes, setVotes] = useState<Map<string, number>>();
+  const [isLoadingVotes, setIsLoadingVotes] = useState(false);
+
   const poll = trpc.useQuery(["polls.getById", { id }]);
   const trpcUtils = trpc.useContext();
+
   trpc.useQuery(["polls.getVotes", { id }], {
     onSuccess(data) {
       if (!data.didVote) return;
@@ -20,27 +23,34 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
       });
 
       setVotes(newVotes);
-    },
-  });
-  const { mutate, isLoading } = trpc.useMutation(["polls.vote"], {
-    onSuccess() {
-      trpcUtils.refetchQueries(["polls.getVotes", { id }]);
+      setIsLoadingVotes(false);
     },
   });
 
+  const { mutate: vote, isLoading: isVoting } = trpc.useMutation(
+    ["polls.vote"],
+    {
+      onSuccess() {
+        setIsLoadingVotes(true);
+        trpcUtils.refetchQueries(["polls.getVotes", { id }]);
+      },
+    }
+  );
+
   const handleVoting = (oId: string) => {
-    if (isLoading) return;
+    if (isVoting) return;
+
     if (votes) {
       alert("You already voted!");
       return;
     }
-    mutate({
+    vote({
       qId: id,
       oId,
     });
   };
 
-  if (poll.isLoading) {
+  if (poll.isLoading || isLoadingVotes || isVoting) {
     return (
       <>
         <div className="text-3xl font-bold text-center animate-pulse">
@@ -68,10 +78,10 @@ const QuestionContent: React.FC<{ id: string }> = ({ id }) => {
       <div className="flex flex-wrap items-center">
         {poll.data.Options.map((o, i) => {
           return (
-            <div key={i} className="w-6/12 text-center mt-5 ">
+            <div key={i} className="w-6/12 text-center mt-5 cursor-pointer">
               <div
                 onClick={() => handleVoting(o.id)}
-                className="relative  text-xl m-auto cursor-pointer bg-gray-100 shadow-sm rounded-md w-11/12 md:w-9/12 text-center"
+                className="relative  text-xl m-auto bg-gray-100 shadow-sm rounded-md w-11/12 md:w-9/12 text-center"
               >
                 <div className="px-5 py-3 -z-1">{o.value}</div>
                 {votes && (
