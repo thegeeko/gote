@@ -94,64 +94,74 @@ const NewPollPage: NextPage = () => {
             </div>
           </Link>
 
-          <input
-            disabled={isLoading}
-            value={question}
-            placeholder="eg: Does python suck ?"
-            className="text-black w-full rounded-md border-transparent bg-transparent font-bold px-7 py-3 text-3xl text-center"
-            onChange={handleQuestionChange}
-          />
+          {submitDisabled && (
+            <div className="text-3xl font-bold text-center animate-pulse">
+              Loading...
+            </div>
+          )}
 
-          <div className="flex flex-wrap items-center">
-            {options.map((_o, i) => {
-              return (
-                <div key={i} className="w-6/12 text-center mt-5">
-                  <input
-                    value={options[i]}
-                    disabled={isLoading}
-                    onChange={(e) => handleOptionChange(e, i)}
-                    placeholder="yes"
+          {!submitDisabled && (
+            <>
+              <input
+                disabled={isLoading}
+                value={question}
+                placeholder="eg: Does python suck ?"
+                className="text-black w-full rounded-md border-transparent bg-transparent font-bold px-7 py-3 text-3xl text-center"
+                onChange={handleQuestionChange}
+              />
+
+              <div className="flex flex-wrap items-center">
+                {options.map((_o, i) => {
+                  return (
+                    <div key={i} className="w-6/12 text-center mt-5">
+                      <input
+                        value={options[i]}
+                        disabled={isLoading}
+                        onChange={(e) => handleOptionChange(e, i)}
+                        placeholder="yes"
+                        className="px-5 py-3 text-xl bg-gray-100 shadow-sm rounded-md w-11/12 md:w-9/12 text-center"
+                      ></input>
+                    </div>
+                  );
+                })}
+
+                <div className="w-6/12 text-center mt-5">
+                  <button
+                    onClick={handleAddOption}
+                    ref={addButtonRef}
                     className="px-5 py-3 text-xl bg-gray-100 shadow-sm rounded-md w-11/12 md:w-9/12 text-center"
-                  ></input>
+                  >
+                    <svg
+                      className="m-auto"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M12 6.5V17.5M17.5 12L6.5 12"
+                        stroke="black"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
                 </div>
-              );
-            })}
 
-            <div className="w-6/12 text-center mt-5">
-              <button
-                onClick={handleAddOption}
-                ref={addButtonRef}
-                className="px-5 py-3 text-xl bg-gray-100 shadow-sm rounded-md w-11/12 md:w-9/12 text-center"
-              >
-                <svg
-                  className="m-auto"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M12 6.5V17.5M17.5 12L6.5 12"
-                    stroke="black"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            <div className="w-12/12 text-center mt-20 basis-full">
-              <button
-                disabled={submitDisabled}
-                className="px-5 py-3 text-xl bg-green-200 shadow-sm rounded-md w-6/12 md:w-3/12 text-center font-bold border-4 border-black"
-                onClick={handleSubmit}
-              >
-                {isLoading ? "Submitting ..." : "Submit"}
-              </button>
-            </div>
-          </div>
+                <div className="w-12/12 text-center mt-20 basis-full">
+                  <button
+                    disabled={submitDisabled}
+                    className="px-5 py-3 text-xl bg-green-200 shadow-sm rounded-md w-6/12 md:w-3/12 text-center font-bold border-4 border-black"
+                    onClick={handleSubmit}
+                  >
+                    {isLoading ? "Submitting ..." : "Submit"}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
