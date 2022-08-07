@@ -10,6 +10,7 @@ const NewPollPage: NextPage = () => {
   const addButtonRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
+  const [submitDisabled, setSubmitDisabled] = useState(false);
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
 
@@ -46,6 +47,7 @@ const NewPollPage: NextPage = () => {
 
   const handleSubmit = async () => {
     if (isLoading) return;
+    setSubmitDisabled(true);
 
     const newOptions = options.filter((o) => o.length > 0);
 
@@ -66,8 +68,10 @@ const NewPollPage: NextPage = () => {
       options: optsToSubmit,
     });
 
-    if (typeof p == "string") {
-      router.push(`polls/${p}`);
+    if (typeof p !== "string") {
+      setSubmitDisabled(false);
+    } else {
+      router.push(`/polls/${p}`);
     }
   };
 
@@ -140,7 +144,7 @@ const NewPollPage: NextPage = () => {
 
             <div className="w-12/12 text-center mt-20 basis-full">
               <button
-                disabled={isLoading}
+                disabled={submitDisabled}
                 className="px-5 py-3 text-xl bg-green-200 shadow-sm rounded-md w-6/12 md:w-3/12 text-center font-bold border-4 border-black"
                 onClick={handleSubmit}
               >
