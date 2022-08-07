@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 /* eslint-enable */
+
 import { nanoid } from "nanoid";
 
 // This function can be marked `async` if using `await` inside
